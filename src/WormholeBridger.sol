@@ -61,7 +61,10 @@ contract WormholeBridger is Owned, IWormholeReceiver {
         require(targetChains[chainId] != address(0), "unknown target chain");
         xVCX.burn(msg.sender, amount);
 
-        relayer.sendPayloadToEvm{value: msg.value}(
+        uint cost = quoteDeliveryCost(chainId);
+        require(msg.value >= cost, "not enough ETH");
+
+        relayer.sendPayloadToEvm{value: cost}(
             chainId, 
             targetChains[chainId],
             abi.encode(to, amount),
@@ -70,6 +73,11 @@ contract WormholeBridger is Owned, IWormholeReceiver {
             chainId,
             to
         );
+
+        if (msg.value > cost) {
+            (bool success, ) = payable(to).call{value: msg.value - cost}("");
+            require(success, "refund failed");
+        }
     }
 
     function quoteDeliveryCost(uint16 chainId) public view returns (uint cost) {

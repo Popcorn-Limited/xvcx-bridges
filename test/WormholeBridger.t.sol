@@ -121,9 +121,7 @@ contract WormholeBridgerTest is Test {
         bytes[] memory messages;
         vm.startPrank(wormholeRelayer);
 
-        uint gas = gasleft();
         bridger.receiveWormholeMessages(payload, messages, bytes32(uint(uint160(address(1)))), 23, bytes32(0));
-        console.log("gas spent: ", gas - gasleft());
         
         assertEq(xVCX.balanceOf(user), 100e18);
     }
