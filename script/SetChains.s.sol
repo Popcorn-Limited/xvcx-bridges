@@ -8,7 +8,7 @@ contract SetChains is CREATE3Script {
     constructor() CREATE3Script(vm.envString("VERSION")) {}
 
     function run() external {
-        WormholeBridger bridger = WormholeBridger(0x3eBB62994e1442E60bBd6ad336bbbf2c16291C5B);
+        WormholeBridger bridger = WormholeBridger(getCreate3Contract("WormholeBridger"));
 
         uint deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
