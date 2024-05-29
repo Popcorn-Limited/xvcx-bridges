@@ -7,10 +7,10 @@ import {IWormholeReceiver} from "./interfaces/IWormholeReceiver.sol";
 import {IXERC20} from "./interfaces/IXERC20.sol";
 
 contract WormholeBridger is Owned, IWormholeReceiver {
-    uint constant GAS_LIMIT = 75_000;
+    uint constant public GAS_LIMIT = 75_000;
 
-    IWormholeRelayer immutable relayer;
-    IXERC20 immutable xVCX;
+    IWormholeRelayer immutable public relayer;
+    IXERC20 immutable public xVCX;
 
     /// @dev wormhole chain id => Wormhole bridger contract address on that chain
     // chains to which we can send xVCX
